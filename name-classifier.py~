@@ -187,66 +187,6 @@ plt.plot(all_losses)
 # Evaluating the Results
 
 
-# keep track of correct guesses in a confusion matrix
-confusion = torch.zeros(n_categories, n_categories)
-n_confusion = 10000
-
-# return an output given a line
-def evaluate(line_tensor):
-    hidden = rnn.initHidden()
-
-    for i in range(line_tensor.size()[0]):
-        output, hidden = rnn(line_tensor[i], hidden)
-    return output
-
-# go through a bunch of example and record which are correctly guesseed
-for i in range(n_confusion):
-    category,line,category_tensor,line_tensor = randomTrainingExample()
-    output = evaluate(line_tensor)
-    guess, guess_i = categoryFromOutput(category)
-    category_i = all_categories.index(category)
-    confusion[category_i][guess_i] += 1
-
-# normalize by dividing every row by its sum
-for i in range(n_categories):
-    confusion[i] = confusion[i] / confusion[i].sum()
-
-# set up plot
-fig = plt.figure()
-ax = fig.add_subplot(111)
-cax = ax.matshow(confusion.numpy())
-fig.colorbar(cax)
-
-# set up axes
-ax.set_xticklabels([''] + all_categories, rotation=90)
-ax.set_yticklabels([''] + all_categories)
-
-# force label at every tick
-ax.xaxis.set_major_locator(ticker.MultipleLocator(1))
-ax.yaxis.set_major_locator(ticker.MultipleLocator(1))
-
-# show plot
-plt.show()
-
-# Running on user input
-def predict(input_line, n_prediction=3):
-    print('\n> %s' % input_line)
-    with torch.no_grad():
-        output = evaluate(lineToTensor(input_line))
-
-        # get top N categories
-        topv, topi = output.topk(n_predictions,1,True)
-        predictions = []
-
-        for i in range(n_predictions):
-            value = topv[0][i].item()
-            category_index = topi[0][i].item()
-            print('(%.2f) %s' % (value, all_categories[category_index]))
-            predictions.append([value, all_categories[category_index]])
-
-predict('Jackson')
-predict('Ujjawal')
-predict('Emam')
 
 
 
