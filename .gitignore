@@ -1,3 +1,10 @@
 *.csv
 *.png
 *.jpg
+*.gz
+*.pt
+*.ubyte
+**/data
+**/train
+**/test
+**/val
