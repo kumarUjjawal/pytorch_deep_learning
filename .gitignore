@@ -9,7 +9,7 @@
 **/test
 **/val
 *.un~
-*.vscode
-*.vs
+**.vscode
+**.vs
 *.DS_Store
-*.ipynb_checkpoints
+**.ipynb_checkpoints
